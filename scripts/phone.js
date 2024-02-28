@@ -10,13 +10,27 @@ const loadPhone = async (search) => {
 const displayPhones = phones => {
 
     const phoneContainer = document.getElementById("phone_container");
-    phoneContainer.textContent="";
+
+    // clear phone container card before adding new card
+    phoneContainer.textContent = "";
+    // console.log(phones.length);
+
+    // display show all button if there are more then 12 phones
+    const showAllContainer = document.getElementById("show_all_container");
+    if (phones.length > 12) {
+        showAllContainer.classList.remove("hidden")
+    }
+    else {
+        showAllContainer.classList.add("hidden")
+    }
+
+    // display only 12 phones
+    phones = phones.slice(0, 12);
 
     phones.forEach(phone => {
-        // console.log(phone);
 
         const phoneCard = document.createElement("div");
-        phoneCard.classList = `card bg-base-100 shadow-xl`;
+        phoneCard.classList = `card bg-base-100 shadow-xl py-10`;
         phoneCard.innerHTML = `
             <figure><img src="${phone.image}" alt="Shoes" /></figure>
             <div class="card-body">
@@ -29,12 +43,26 @@ const displayPhones = phones => {
             `
         phoneContainer.appendChild(phoneCard);
 
-    })
+    });
+    // hide loading
+    toggleLoading(false)
 }
 
 
-const handleSearch =()=>{
+const handleSearch = () => {
+    toggleLoading(true)
     const searchField = document.getElementById("search_field");
     const searchText = searchField.value;
     loadPhone(searchText)
+}
+
+const toggleLoading = (isLoading) => {
+    const loading = document.getElementById("loading");
+
+    if (isLoading) {
+        loading.classList.remove("hidden")
+    }
+    else {
+        loading.classList.add("hidden")
+    }
 }
